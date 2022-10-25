@@ -1,0 +1,7 @@
+#define macro MAIN() = takes (0) returns (0) {
+    pc               // [pc]
+    calldataload     // [calldata]
+    0xE0             // [224 calldata]
+    shr              // [selector]
+    SIMPLE_MAIN()
+}
