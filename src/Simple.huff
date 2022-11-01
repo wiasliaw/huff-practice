@@ -24,9 +24,19 @@
 
 /* Constructor */
 #define macro SIMPLE_CONSTRUCTOR() = takes (0) returns (0) {
-    0x00 calldataload // [value]
-    [VALUE_LOCATION]  // [ptr value]
-    sstore            // []
+    // copy constructor data to memory
+    0x20      // [size]
+    0x20      // [0x20 size]
+    codesize  // [codesize 0x20 size]
+    sub       // [offset size]
+    0x00      // [0x00 0ffset size]
+    codecopy  // []
+
+    // load
+    0x00             // [0x00]
+    mload            // [value]
+    [VALUE_LOCATION] // [ptr value]
+    sstore           // []
 }
 
 /* Main */
@@ -40,9 +50,9 @@
     set_region jumpi // [selector], jump to set_region
 
     // match get
-    dup1
-    __FUNC_SIG(get)
-    eq
+    dup1             // [selector selector]
+    __FUNC_SIG(get)  // [get_selector selector selector]
+    eq               // [success, selector]
     get_region jumpi // [selector], jump to get_region
 
     // fallback -> revert

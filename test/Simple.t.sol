@@ -21,7 +21,19 @@ contract TestSimple is Test {
         _simple = IHuffSimple(config.deploy("Simple"));
 
         _simple.set(33);
-        console.log(_simple.get());
+        assertEq(_simple.get(), 33);
+    }
+
+    function testConstructor() external {
+        string memory wrapper_code = vm.readFile("test/mock/SimpleWithConstructor.mock.huff");
+
+        HuffConfig config = HuffDeployer
+            .config()
+            .with_args(bytes.concat(abi.encode(uint256(33))))
+            .with_code(wrapper_code);
+        _simple = IHuffSimple(config.deploy("Simple"));
+
+        assertEq(_simple.get(), 33);
     }
 }
 
