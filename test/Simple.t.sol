@@ -3,7 +3,6 @@ pragma solidity ^0.8.15;
 
 import "foundry-huff/HuffDeployer.sol";
 import "forge-std/Test.sol";
-import "openzeppelin-contracts/contracts/utils/Create2.sol";
 
 interface IHuffSimple {
     function set(uint256) external;
@@ -34,6 +33,8 @@ contract TestSimple is Test {
         _simple = IHuffSimple(config.deploy("Simple"));
 
         assertEq(_simple.get(), 33);
+        _simple.set(43);
+        assertEq(_simple.get(), 43);
     }
 }
 
